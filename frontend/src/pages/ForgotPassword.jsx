@@ -5,11 +5,9 @@ import { Vote, Mail, Lock, Key, Eye, EyeOff, AlertCircle, CheckCircle, ArrowLeft
 import toast from 'react-hot-toast';
 
 const ForgotPassword = () => {
-    const [step, setStep] = useState(1); // 1: Request token, 2: Reset password
+    const [step, setStep] = useState(1); // 1: Request OTP, 2: Reset password
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
-    const [generatedOtp, setGeneratedOtp] = useState(''); // Store the generated OTP
-    const [userName, setUserName] = useState(''); // Store user's name
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -26,13 +24,9 @@ const ForgotPassword = () => {
         try {
             const response = await authAPI.forgotPassword(email);
 
-            // OTP is returned directly from the API
-            if (response.data.otp) {
-                setGeneratedOtp(response.data.otp);
-                setUserName(response.data.user_name || '');
-                toast.success('OTP generated successfully!');
-                setStep(2);
-            }
+            // OTP is sent to email, not displayed on screen
+            toast.success(response.data.message || 'OTP sent to your email!');
+            setStep(2);
         } catch (err) {
             const message = err.response?.data?.error || 'Failed to generate reset OTP';
             setError(message);
@@ -85,7 +79,7 @@ const ForgotPassword = () => {
                 <p className="mt-2 text-center text-gray-600">
                     {step === 1
                         ? 'Enter your email to receive a reset OTP'
-                        : 'Enter the OTP and your new password'}
+                        : 'Check your email for the OTP and enter it below'}
                 </p>
             </div>
 
@@ -137,33 +131,26 @@ const ForgotPassword = () => {
                                             <span>Sending...</span>
                                         </div>
                                     ) : (
-                                        'Get Reset OTP'
+                                        'Send OTP to Email'
                                     )}
                                 </button>
                             </div>
                         </form>
                     ) : (
                         <form className="space-y-6" onSubmit={handleResetPassword}>
-                            {/* Show generated OTP */}
-                            {generatedOtp && (
-                                <div className="mb-4 p-4 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded-xl">
-                                    <div className="flex items-center space-x-2 text-cyan-400 mb-3">
-                                        <Shield className="w-5 h-5 flex-shrink-0" />
-                                        <span className="font-medium">Hello, {userName}!</span>
-                                    </div>
-                                    <p className="text-sm text-gray-300 mb-3">
-                                        Your password reset OTP is:
-                                    </p>
-                                    <div className="bg-dark-200 border border-cyan-500/50 rounded-lg p-4 text-center">
-                                        <p className="text-3xl font-mono font-bold text-cyan-400 tracking-widest">
-                                            {generatedOtp}
-                                        </p>
-                                    </div>
-                                    <p className="text-xs text-gray-400 mt-3 text-center">
-                                        ⏰ This OTP expires in 10 minutes
-                                    </p>
+                            {/* Email sent confirmation message */}
+                            <div className="mb-4 p-4 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-xl">
+                                <div className="flex items-center space-x-2 text-green-600 mb-2">
+                                    <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                                    <span className="font-medium">OTP Sent!</span>
                                 </div>
-                            )}
+                                <p className="text-sm text-gray-600">
+                                    We've sent a 6-digit OTP to <strong>{email}</strong>. Please check your email inbox (and spam folder) and enter the OTP below.
+                                </p>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    ⏰ OTP expires in 10 minutes
+                                </p>
+                            </div>
 
                             <div>
                                 <label htmlFor="token" className="block text-sm font-medium text-gray-700">

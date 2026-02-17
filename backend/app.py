@@ -451,13 +451,20 @@ def forgot_password():
     db.session.add(reset_token)
     db.session.commit()
     
-    # Return OTP directly (displayed on page)
-    return jsonify({
-        'message': 'OTP generated successfully',
-        'otp': otp,
-        'user_name': user.full_name,
-        'expires_in': '10 minutes'
-    }), 200
+    # Send OTP via email (only admin-verified users reach here)
+    email_sent = send_reset_email(user.email, otp, user.full_name)
+
+    if email_sent:
+        return jsonify({
+            'message': 'OTP has been sent to your registered email address',
+            'email_sent': True
+        }), 200
+    else:
+        # Fallback: email not configured, OTP printed to server console
+        return jsonify({
+            'message': 'OTP has been generated. Please check your email (or ask admin for the OTP from server logs)',
+            'email_sent': False
+        }), 200
 
 
 @app.route('/api/auth/reset-password', methods=['POST'])
