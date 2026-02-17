@@ -1,0 +1,11 @@
+flask==3.0.0
+flask-cors==4.0.0
+flask-jwt-extended==4.6.0
+flask-sqlalchemy==3.1.1
+python-dotenv==1.0.0
+web3==6.11.3
+bcrypt==4.1.1
+pymysql==1.1.0
+firebase-admin==6.2.0
+gunicorn==21.2.0
+email-validator==2.1.0

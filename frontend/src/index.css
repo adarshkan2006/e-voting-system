@@ -1,0 +1,271 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark Theme - Aave Governance Inspired */
+:root {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-card: rgba(22, 27, 34, 0.8);
+  --border-color: rgba(48, 54, 61, 0.8);
+  --text-primary: #f0f6fc;
+  --text-secondary: #8b949e;
+  --accent-cyan: #22d3ee;
+  --accent-green: #22c55e;
+}
+
+/* Custom styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Custom scrollbar - Dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 100%);
+}
+
+/* Animation classes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.5);
+  }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Glass morphism effect - Dark theme */
+.glass {
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(48, 54, 61, 0.5);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(22, 27, 34, 0.9) 0%, rgba(13, 17, 23, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(48, 54, 61, 0.5);
+  border-radius: 16px;
+}
+
+/* Gradient backgrounds - Cyan/Teal Theme */
+.gradient-primary {
+  background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #0891b2 100%);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.gradient-hero {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f2e 100%);
+}
+
+/* Dark background classes */
+.bg-dark-primary {
+  background-color: var(--bg-primary);
+}
+
+.bg-dark-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.bg-dark-card {
+  background: var(--bg-card);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.3);
+}
+
+/* Stat cards like Aave */
+.stat-card {
+  background: linear-gradient(135deg, rgba(22, 27, 34, 0.9) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(48, 54, 61, 0.5);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: rgba(34, 211, 238, 0.4);
+  box-shadow: 0 8px 32px rgba(34, 211, 238, 0.1);
+}
+
+/* Button styles - Dark theme */
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold py-2 px-4 rounded-lg transition-all duration-200 border border-gray-700 hover:border-gray-600;
+  }
+
+  .btn-success {
+    @apply bg-gradient-to-r from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200;
+  }
+
+  .btn-danger {
+    @apply bg-gradient-to-r from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200;
+  }
+
+  /* Input styles - Dark theme */
+  .input-field {
+    @apply w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all duration-200;
+  }
+
+  /* Status badges - Dark theme */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply bg-green-900/50 text-green-400 border border-green-500/30;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-900/50 text-yellow-400 border border-yellow-500/30;
+  }
+
+  .badge-danger {
+    @apply bg-red-900/50 text-red-400 border border-red-500/30;
+  }
+
+  .badge-info {
+    @apply bg-cyan-900/50 text-cyan-400 border border-cyan-500/30;
+  }
+}
+
+/* Progress bar like Aave */
+.progress-bar {
+  height: 8px;
+  border-radius: 9999px;
+  background-color: #1f2937;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #22c55e, #4ade80);
+  transition: all 0.5s ease;
+}
+
+/* Neon glow effects */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.3), 0 0 40px rgba(34, 211, 238, 0.1);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 0 40px rgba(34, 197, 94, 0.1);
+}
+
+/* Override default backgrounds for dark theme */
+.bg-gray-50 {
+  background-color: #0d1117 !important;
+}
+
+.bg-white {
+  background-color: #161b22 !important;
+}
+
+.text-gray-900 {
+  color: #f0f6fc !important;
+}
+
+.text-gray-600 {
+  color: #8b949e !important;
+}
+
+.border-gray-200,
+.border-gray-300 {
+  border-color: rgba(48, 54, 61, 0.8) !important;
+}
+
+/* Shadow overrides for dark theme */
+.shadow-sm,
+.shadow,
+.shadow-md,
+.shadow-lg,
+.shadow-xl {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Dark theme specific utility classes */
+.bg-dark-100 {
+  background-color: #1a1f2e;
+}
+
+.bg-dark-200 {
+  background-color: #151921;
+}
+
+.bg-dark-300 {
+  background-color: #10131a;
+}
