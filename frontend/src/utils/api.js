@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use localhost for local development
-const API_URL = 'http://localhost:5000/api';
+// Use relative URL so Vite proxy forwards to backend (works on LAN too)
+const API_URL = '/api';
 
 // Create axios instance
 const api = axios.create({
