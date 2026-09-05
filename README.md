@@ -216,6 +216,6 @@ This project is created for educational purposes.
 
 ---
 
-**Project By**: Atharva Rajesh Nandvidkar  
+**Project By**: Adarsh Sanoj Kanoujia 
 **Institution**: Nirmala Memorial Foundation College  
 **Academic Year**: 2024-2025
