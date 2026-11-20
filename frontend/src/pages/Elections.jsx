@@ -22,12 +22,17 @@ const Elections = () => {
   const fetchElections = async () => {
     try {
       const response = await electionsAPI.getAll();
-      setElections(response.data.elections);
+      const electionsList = Array.isArray(response.data?.elections)
+        ? response.data.elections
+        : Array.isArray(response.data)
+        ? response.data
+        : [];
+      setElections(electionsList);
       
       // Check voting status for each election if authenticated
-      if (isAuthenticated) {
+      if (isAuthenticated && electionsList.length > 0) {
         const votedStatus = {};
-        for (const election of response.data.elections) {
+        for (const election of electionsList) {
           try {
             const voteResponse = await electionsAPI.hasVoted(election.id);
             votedStatus[election.id] = voteResponse.data.has_voted;
@@ -39,6 +44,7 @@ const Elections = () => {
       }
     } catch (error) {
       console.error('Error fetching elections:', error);
+      setElections([]);
       toast.error('Failed to load elections');
     } finally {
       setLoading(false);
