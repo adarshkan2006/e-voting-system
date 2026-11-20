@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { electionsAPI, adminAPI } from '../utils/api';
 import {
   Shield, Users, Vote, Plus, CheckCircle, XCircle,
-  Calendar, Clock, Trash2, Edit, UserCheck, AlertCircle
+  Trash2, UserCheck
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Loading from '../components/Loading';
@@ -52,8 +52,8 @@ const Admin = () => {
         adminAPI.getUsers(),
         electionsAPI.getAll()
       ]);
-      setUsers(usersResponse.data.users);
-      setElections(electionsResponse.data.elections);
+      setUsers(usersResponse.data?.users || []);
+      setElections(electionsResponse.data?.elections || []);
     } catch (error) {
       toast.error('Failed to load data');
     } finally {
@@ -65,21 +65,9 @@ const Admin = () => {
     setLoading(true);
     try {
       const response = await electionsAPI.getAll();
-      setElections(response.data.elections);
+      setElections(response.data?.elections || []);
     } catch (error) {
       toast.error('Failed to load elections');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchUsers = async () => {
-    setLoading(true);
-    try {
-      const response = await adminAPI.getUsers();
-      setUsers(response.data.users);
-    } catch (error) {
-      toast.error('Failed to load users');
     } finally {
       setLoading(false);
     }
@@ -159,27 +147,27 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-dark-300 py-8">
+    <div className="min-h-screen bg-dark-300 py-6 sm:py-8 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-6 sm:mb-8 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20">
-              <Shield className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 shrink-0">
+              <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-white">Admin Panel</h1>
-              <p className="text-gray-400">Manage elections and voters</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white">Admin Panel</h1>
+              <p className="text-sm sm:text-base text-gray-400">Manage elections and voters</p>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 border-b border-gray-700">
-          <nav className="flex space-x-8">
+        <div className="mb-6 border-b border-gray-700 overflow-x-auto">
+          <nav className="flex space-x-6 sm:space-x-8 min-w-max">
             <button
               onClick={() => setActiveTab('elections')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'elections'
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'elections'
                 ? 'border-cyan-500 text-cyan-400'
                 : 'border-transparent text-gray-400 hover:text-gray-200'
                 }`}
@@ -191,7 +179,7 @@ const Admin = () => {
             </button>
             <button
               onClick={() => setActiveTab('users')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'users'
+              className={`py-3 sm:py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === 'users'
                 ? 'border-cyan-500 text-cyan-400'
                 : 'border-transparent text-gray-400 hover:text-gray-200'
                 }`}
@@ -207,11 +195,11 @@ const Admin = () => {
         {/* Elections Tab */}
         {activeTab === 'elections' && (
           <div>
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">All Elections</h2>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-white">All Elections</h2>
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="btn-primary flex items-center space-x-2"
+                className="btn-primary flex items-center justify-center space-x-2 w-full sm:w-auto"
               >
                 <Plus className="w-5 h-5" />
                 <span>Create Election</span>
@@ -219,47 +207,47 @@ const Admin = () => {
             </div>
 
             {elections.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-2xl shadow-sm">
-                <Vote className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-medium text-gray-900">No Elections</h3>
-                <p className="text-gray-500 mt-2">Create your first election to get started</p>
+              <div className="text-center py-12 sm:py-16 bg-white rounded-2xl shadow-sm px-4">
+                <Vote className="w-14 h-14 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg sm:text-xl font-medium text-gray-900">No Elections</h3>
+                <p className="text-sm sm:text-base text-gray-500 mt-2">Create your first election to get started</p>
               </div>
             ) : (
-              <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-                <table className="w-full">
+              <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
+                <table className="min-w-[680px] w-full">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Election</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Duration</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Candidates</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Election</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Duration</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Candidates</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {elections.map((election) => (
                       <tr key={election.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4">
                           <div>
                             <p className="font-medium text-gray-900">{election.name}</p>
-                            <p className="text-sm text-gray-500 truncate max-w-xs">{election.description}</p>
+                            <p className="text-sm text-gray-500 truncate max-w-[200px] sm:max-w-xs">{election.description}</p>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                           <div className="text-sm">
                             <p className="text-gray-900">{formatDateTime(election.start_time)}</p>
                             <p className="text-gray-500">to {formatDateTime(election.end_time)}</p>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                           <span className="text-gray-900">{election.candidates?.length || 0}</span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                           <span className={`badge ${election.is_active ? 'badge-success' : 'badge-danger'}`}>
                             {election.is_active ? 'Active' : 'Inactive'}
                           </span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center space-x-2">
                             <button
                               onClick={() => {
@@ -299,44 +287,44 @@ const Admin = () => {
         {/* Users Tab */}
         {activeTab === 'users' && (
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">All Users</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-white mb-6">All Users</h2>
 
             {users.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-2xl shadow-sm">
-                <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-medium text-gray-900">No Users</h3>
-                <p className="text-gray-500 mt-2">Users will appear here once they register</p>
+              <div className="text-center py-12 sm:py-16 bg-white rounded-2xl shadow-sm px-4">
+                <Users className="w-14 h-14 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg sm:text-xl font-medium text-gray-900">No Users</h3>
+                <p className="text-sm sm:text-base text-gray-500 mt-2">Users will appear here once they register</p>
               </div>
             ) : (
-              <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-                <table className="w-full">
+              <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
+                <table className="min-w-[680px] w-full">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">User</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Voter ID</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Voter ID</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                      <th className="px-4 sm:px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {users.map((user) => (
                       <tr key={user.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4">
                           <div>
                             <p className="font-medium text-gray-900">{user.full_name}</p>
                             <p className="text-sm text-gray-500">{user.email}</p>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                           <span className="text-gray-600">{user.voter_id || 'Not provided'}</span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                           <span className="text-gray-600">
                             {new Date(user.created_at).toLocaleDateString()}
                           </span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                           <div className="flex flex-col space-y-1">
                             <span className={`badge ${user.is_verified ? 'badge-success' : 'badge-warning'}`}>
                               {user.is_verified ? 'Verified' : 'Pending'}
@@ -346,7 +334,7 @@ const Admin = () => {
                             )}
                           </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center space-x-2">
                             {!user.is_verified && (
                               <button
@@ -382,9 +370,9 @@ const Admin = () => {
 
       {/* Create Election Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 animate-fade-in">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Create New Election</h3>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 my-8 animate-fade-in">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Create New Election</h3>
             <form onSubmit={handleCreateElection} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -395,8 +383,8 @@ const Admin = () => {
                   required
                   value={electionForm.name}
                   onChange={(e) => setElectionForm({ ...electionForm, name: e.target.value })}
-                  className="input-field"
-                  placeholder="e.g., Student Council Election 2025"
+                  className="input-field w-full"
+                  placeholder="e.g., Student Council Election 2026"
                 />
               </div>
               <div>
@@ -406,12 +394,12 @@ const Admin = () => {
                 <textarea
                   value={electionForm.description}
                   onChange={(e) => setElectionForm({ ...electionForm, description: e.target.value })}
-                  className="input-field"
+                  className="input-field w-full"
                   rows={3}
                   placeholder="Brief description of the election"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Start Time
@@ -421,7 +409,7 @@ const Admin = () => {
                     required
                     value={electionForm.start_time}
                     onChange={(e) => setElectionForm({ ...electionForm, start_time: e.target.value })}
-                    className="input-field"
+                    className="input-field w-full"
                   />
                 </div>
                 <div>
@@ -433,19 +421,19 @@ const Admin = () => {
                     required
                     value={electionForm.end_time}
                     onChange={(e) => setElectionForm({ ...electionForm, end_time: e.target.value })}
-                    className="input-field"
+                    className="input-field w-full"
                   />
                 </div>
               </div>
-              <div className="flex space-x-3 pt-4">
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  className="w-full sm:flex-1 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="flex-1 btn-primary">
+                <button type="submit" className="w-full sm:flex-1 btn-primary py-2">
                   Create Election
                 </button>
               </div>
@@ -456,10 +444,10 @@ const Admin = () => {
 
       {/* Add Candidate Modal */}
       {showCandidateModal && selectedElection && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 animate-fade-in">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Add Candidate</h3>
-            <p className="text-gray-600 mb-4">Adding to: {selectedElection.name}</p>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 my-8 animate-fade-in">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Add Candidate</h3>
+            <p className="text-sm sm:text-base text-gray-600 mb-4">Adding to: {selectedElection.name}</p>
             <form onSubmit={handleAddCandidate} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -470,7 +458,7 @@ const Admin = () => {
                   required
                   value={candidateForm.name}
                   onChange={(e) => setCandidateForm({ ...candidateForm, name: e.target.value })}
-                  className="input-field"
+                  className="input-field w-full"
                   placeholder="Full name of the candidate"
                 />
               </div>
@@ -482,7 +470,7 @@ const Admin = () => {
                   type="text"
                   value={candidateForm.party}
                   onChange={(e) => setCandidateForm({ ...candidateForm, party: e.target.value })}
-                  className="input-field"
+                  className="input-field w-full"
                   placeholder="e.g., Independent, Student Union"
                 />
               </div>
@@ -493,23 +481,23 @@ const Admin = () => {
                 <textarea
                   value={candidateForm.description}
                   onChange={(e) => setCandidateForm({ ...candidateForm, description: e.target.value })}
-                  className="input-field"
+                  className="input-field w-full"
                   rows={2}
                   placeholder="Brief info about the candidate"
                 />
               </div>
-              <div className="flex space-x-3 pt-4">
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4">
                 <button
                   type="button"
                   onClick={() => {
                     setShowCandidateModal(false);
                     setSelectedElection(null);
                   }}
-                  className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  className="w-full sm:flex-1 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="flex-1 btn-primary">
+                <button type="submit" className="w-full sm:flex-1 btn-primary py-2">
                   Add Candidate
                 </button>
               </div>
