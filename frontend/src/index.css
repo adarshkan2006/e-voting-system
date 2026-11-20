@@ -266,6 +266,11 @@ body {
   background-color: #151921;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .bg-dark-300 {
   background-color: #10131a;
 }
