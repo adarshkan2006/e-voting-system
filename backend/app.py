@@ -877,7 +877,7 @@ def internal_error(error):
 def init_db():
     """Initialize the database and create default admin"""
     db.create_all()
-    
+
     admin = User.query.filter_by(email='admin@evoting.com').first()
     if not admin:
         admin = User(
@@ -893,8 +893,7 @@ def init_db():
         admin.is_verified = True
         admin.set_password('admin123')
     db.session.commit()
-        print('Default admin created: admin@evoting.com / admin123')
-
+    print('Default admin ready: admin@evoting.com / admin123')
 
 # Initialize database when app starts
 with app.app_context():
