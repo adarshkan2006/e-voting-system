@@ -886,14 +886,14 @@ def init_db():
             is_admin=True,
             is_verified=True
         )
-        admin.set_password('admin123')
+        admin.set_password('Admin@2025')
         db.session.add(admin)
     else:
         admin.is_admin = True
         admin.is_verified = True
-        admin.set_password('admin123')
+        admin.set_password('Admin@2025')
     db.session.commit()
-    print('Default admin ready: admin@evoting.com / admin123')
+    print('Default admin ready: admin@evoting.com / Admin@2025')
 
 # Initialize database when app starts
 with app.app_context():
