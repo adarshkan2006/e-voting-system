@@ -5,7 +5,8 @@ const API_URL = '/api';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: import.meta.env.VITE_API_URL || 'https://e-voting-system-3prf.onrender.com/api',
+  
   headers: {
     'Content-Type': 'application/json',
   },
