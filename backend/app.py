@@ -878,7 +878,6 @@ def init_db():
     """Initialize the database and create default admin"""
     db.create_all()
     
-    # Create default admin if not exists
     admin = User.query.filter_by(email='admin@evoting.com').first()
     if not admin:
         admin = User(
@@ -887,9 +886,13 @@ def init_db():
             is_admin=True,
             is_verified=True
         )
-        admin.set_password('admin123')  # Change this in production!
+        admin.set_password('admin123')
         db.session.add(admin)
-        db.session.commit()
+    else:
+        admin.is_admin = True
+        admin.is_verified = True
+        admin.set_password('admin123')
+    db.session.commit()
         print('Default admin created: admin@evoting.com / admin123')
 
 
